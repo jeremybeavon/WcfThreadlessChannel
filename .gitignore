@@ -212,3 +212,7 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+/TextSerialization.sln.ide
+AppDomainCallbackExtensions.sln.ide/edb.chk
+/AppDomainCallbackExtensions.sln.ide
+/WcfThreadlessChannel.sln.ide

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3F9D2D69-7067-4F53-9EF4-56C52ACEB5EB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WcfThreadlessChannel</RootNamespace>
+    <AssemblyName>WcfThreadlessChannel</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>8f9649fc</NuGetPackageImportStamp>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CompletedAsyncResult.cs" />
+    <Compile Include="CompletedAsyncResult.generic.cs" />
+    <Compile Include="IHasBindingElement.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadlessBinding.cs" />
+    <Compile Include="ThreadlessBindingElement.cs" />
+    <Compile Include="ThreadlessChannelBase.cs" />
+    <Compile Include="ThreadlessChannelFactories.cs" />
+    <Compile Include="ThreadlessChannelFactoryBase.cs" />
+    <Compile Include="ThreadlessChannelFactoryProvider.cs" />
+    <Compile Include="ThreadlessChannelListenerBase.cs" />
+    <Compile Include="ThreadlessChannelListenerProvider.cs" />
+    <Compile Include="ThreadlessChannelListeners.cs" />
+    <Compile Include="ThreadlessInputChannel.cs" />
+    <Compile Include="ThreadlessInputChannelListener.cs" />
+    <Compile Include="ThreadlessInputSessionChannel.cs" />
+    <Compile Include="ThreadlessInputSessionChannelListener.cs" />
+    <Compile Include="ThreadlessOutputChannel.cs" />
+    <Compile Include="ThreadlessOutputChannelFactory.cs" />
+    <Compile Include="ThreadlessOutputSessionChannel.cs" />
+    <Compile Include="ThreadlessOutputSessionChannelFactory.cs" />
+    <Compile Include="ThreadlessReplyChannel.cs" />
+    <Compile Include="ThreadlessReplyChannelListener.cs" />
+    <Compile Include="ThreadlessReplySessionChannel.cs" />
+    <Compile Include="ThreadlessReplySessionChannelListener.cs" />
+    <Compile Include="ThreadlessRequestContextQueue.cs" />
+    <Compile Include="ThreadlessRequestChannel.cs" />
+    <Compile Include="ThreadlessRequestChannelFactory.cs" />
+    <Compile Include="ThreadlessRequestContext.cs" />
+    <Compile Include="ThreadlessRequestSessionChannel.cs" />
+    <Compile Include="ThreadlessRequestSessionChannelFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
