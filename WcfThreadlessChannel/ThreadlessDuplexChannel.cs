@@ -4,23 +4,37 @@ using System.ServiceModel.Channels;
 
 namespace WcfThreadlessChannel
 {
-    public class ThreadlessInputChannel : ThreadlessChannelBase, IInputChannel
+    public class ThreadlessDuplexChannel : ThreadlessChannelBase, IDuplexChannel
     {
-        public ThreadlessInputChannel(ThreadlessInputChannelListener listener, EndpointAddress localAddress)
-            : this(listener, listener, localAddress)
+        public ThreadlessDuplexChannel(
+            ThreadlessDuplexChannelFactory channelFactory, EndpointAddress address, Uri via)
+            : this(channelFactory, channelFactory, BuildCallbackAddress(address), address, via)
         {
         }
 
-        protected ThreadlessInputChannel(
-            ChannelManagerBase channelManager,
+        public ThreadlessDuplexChannel(ThreadlessDuplexChannelListener listener, EndpointAddress address)
+            : this(listener, listener, address, BuildCallbackAddress(address), address.Uri)
+        {
+        }
+
+        protected ThreadlessDuplexChannel(
+            ChannelManagerBase manager,
             IHasBindingElement bindingElement,
-            EndpointAddress localAddress)
-            : base(channelManager, bindingElement)
+            EndpointAddress localAddress,
+            EndpointAddress remoteAddress,
+            Uri via)
+            : base(manager, bindingElement)
         {
             LocalAddress = localAddress;
+            RemoteAddress = remoteAddress;
+            Via = via;
         }
 
         public EndpointAddress LocalAddress { get; private set; }
+
+        public EndpointAddress RemoteAddress { get; private set; }
+
+        public Uri Via { get; private set; }
 
         public IAsyncResult BeginReceive(AsyncCallback callback, object state)
         {
@@ -30,6 +44,17 @@ namespace WcfThreadlessChannel
         public IAsyncResult BeginReceive(TimeSpan timeout, AsyncCallback callback, object state)
         {
             return BeginReceive(callback, state);
+        }
+
+        public IAsyncResult BeginSend(Message message, AsyncCallback callback, object state)
+        {
+            Send(message);
+            return new CompletedAsyncResult(callback, state);
+        }
+
+        public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            return BeginSend(message, callback, state);
         }
 
         public IAsyncResult BeginTryReceive(TimeSpan timeout, AsyncCallback callback, object state)
@@ -45,6 +70,10 @@ namespace WcfThreadlessChannel
         public Message EndReceive(IAsyncResult result)
         {
             return ((ThreadlessRequestContext)result).ResponseMessage;
+        }
+
+        public void EndSend(IAsyncResult result)
+        {
         }
 
         public bool EndTryReceive(IAsyncResult result, out Message message)
@@ -69,6 +98,16 @@ namespace WcfThreadlessChannel
             return Receive();
         }
 
+        public void Send(Message message)
+        {
+            BindingElement.ExecuteRequest(RemoteAddress.Uri, message);
+        }
+
+        public void Send(Message message, TimeSpan timeout)
+        {
+            Send(message);
+        }
+
         public bool TryReceive(TimeSpan timeout, out Message message)
         {
             message = null;
@@ -78,6 +117,11 @@ namespace WcfThreadlessChannel
         public bool WaitForMessage(TimeSpan timeout)
         {
             return false;
+        }
+
+        protected static EndpointAddress BuildCallbackAddress(EndpointAddress address)
+        {
+            return new EndpointAddress(address.Uri.ToString() + "/callback");
         }
 
         protected override void OnClosed()

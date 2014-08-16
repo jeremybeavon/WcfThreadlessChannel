@@ -19,5 +19,7 @@ namespace WcfThreadlessChannel
         public Func<IChannel, IOutputSession> OutputSessionProvider { get; set; }
 
         public Func<IChannel, IInputSession> InputSessionProvider { get; set; }
+
+        public Func<IDuplexChannel, IDuplexSession> DuplexSessionProvider { get; set; }
     }
 }

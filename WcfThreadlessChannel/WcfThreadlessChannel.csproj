@@ -45,6 +45,10 @@
     <Compile Include="ClosedAsyncResult.cs" />
     <Compile Include="CompletedAsyncResult.cs" />
     <Compile Include="CompletedAsyncResult.generic.cs" />
+    <Compile Include="ThreadlessChannelFactoryProvider.generic.cs" />
+    <Compile Include="ThreadlessClient.generic2.cs" />
+    <Compile Include="ThreadlessDuplexChannel.cs" />
+    <Compile Include="ThreadlessDuplexChannelFactory.cs" />
     <Compile Include="IHasBindingElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThreadlessBinding.cs" />
@@ -56,6 +60,12 @@
     <Compile Include="ThreadlessChannelListenerBase.cs" />
     <Compile Include="ThreadlessChannelListenerProvider.cs" />
     <Compile Include="ThreadlessChannelListeners.cs" />
+    <Compile Include="ThreadlessDuplexChannelListener.cs" />
+    <Compile Include="ThreadlessDuplexClient.generic2.cs" />
+    <Compile Include="ThreadlessDuplexClient.generic1.cs" />
+    <Compile Include="ThreadlessDuplexSessionChannel.cs" />
+    <Compile Include="ThreadlessDuplexSessionChannelFactory.cs" />
+    <Compile Include="ThreadlessDuplexSessionChannelListener.cs" />
     <Compile Include="ThreadlessInputChannel.cs" />
     <Compile Include="ThreadlessInputChannelListener.cs" />
     <Compile Include="ThreadlessInputSessionChannel.cs" />
@@ -74,6 +84,7 @@
     <Compile Include="ThreadlessRequestContext.cs" />
     <Compile Include="ThreadlessRequestSessionChannel.cs" />
     <Compile Include="ThreadlessRequestSessionChannelFactory.cs" />
+    <Compile Include="ThreadlessClient.generic1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -12,7 +12,9 @@ namespace WcfThreadlessChannel
             { typeof(IRequestChannel), bindingElement => new ThreadlessRequestChannelFactory(bindingElement) },
             { typeof(IRequestSessionChannel), bindingElement => new ThreadlessRequestSessionChannelFactory(bindingElement) },
             { typeof(IOutputChannel), bindingElement => new ThreadlessOutputChannelFactory(bindingElement) },
-            { typeof(IOutputSessionChannel), bindingElement => new ThreadlessOutputSessionChannelFactory(bindingElement) }
+            { typeof(IOutputSessionChannel), bindingElement => new ThreadlessOutputSessionChannelFactory(bindingElement) },
+            { typeof(IDuplexChannel), bindingElement => new ThreadlessDuplexChannelFactory(bindingElement) },
+            { typeof(IDuplexSessionChannel), bindingElement => new ThreadlessDuplexSessionChannelFactory(bindingElement) }
         };
 
         private static readonly ThreadlessChannelListeners ChannelListeners = new ThreadlessChannelListeners()
@@ -20,7 +22,9 @@ namespace WcfThreadlessChannel
             { typeof(IReplyChannel), (bindingElement, uri) => new ThreadlessReplyChannelListener(bindingElement, uri) },
             { typeof(IReplySessionChannel), (bindingElement, uri) => new ThreadlessReplySessionChannelListener(bindingElement, uri) },
             { typeof(IInputChannel), (bindingElement, uri) => new ThreadlessInputChannelListener(bindingElement, uri) },
-            { typeof(IInputSessionChannel), (bindingElement, uri) => new ThreadlessInputSessionChannelListener(bindingElement, uri) }
+            { typeof(IInputSessionChannel), (bindingElement, uri) => new ThreadlessInputSessionChannelListener(bindingElement, uri) },
+            { typeof(IDuplexChannel), (bindingElement, uri) => new ThreadlessDuplexChannelListener(bindingElement, uri) },
+            { typeof(IDuplexSessionChannel), (bindingElement, uri) => new ThreadlessDuplexSessionChannelListener(bindingElement, uri) },
         };
 
         private readonly ConcurrentDictionary<Uri, ThreadlessRequestContextQueue> requestsByUri;
