@@ -95,10 +95,19 @@ namespace WcfThreadlessChannel
             return (IChannelListener<TChannel>)ChannelListeners[typeof(TChannel)](this, uri);
         }
 
-        public ThreadlessRequestContext CreateAndRegisterRequestContext(Uri uri, AsyncCallback callback, object state)
+        public ThreadlessRequestContext CreateAndRegisterRequestContext(
+            ICommunicationObject channel,
+            EndpointAddress address,
+            AsyncCallback callback,
+            object state)
         {
+            if (channel.State == CommunicationState.Closing || channel.State == CommunicationState.Closed)
+            {
+                return null;
+            }
+
             ThreadlessRequestContext context = new ThreadlessRequestContext(callback, state);
-            RegisterRequestContext(uri, context);
+            RegisterRequestContext(address.Uri, context);
             return context;
         }
 
@@ -110,25 +119,63 @@ namespace WcfThreadlessChannel
                 queue.Enqueue(context);
                 return queue;
             };
+            ThreadlessRequestContextQueue requestQueue = null;
             Func<Uri, ThreadlessRequestContextQueue, ThreadlessRequestContextQueue> updateAction = (key, queue) =>
             {
                 queue.Enqueue(context);
+                requestQueue = queue; 
                 return queue;
             };
             requestsByUri.AddOrUpdate(uri, addAction, updateAction);
+            if (requestQueue != null && requestQueue.UseWaitHandle)
+            {
+                requestQueue.WaitHandle.Set();
+            }
         }
 
         public Message ExecuteRequest(Uri uri, Message message)
         {
-            ThreadlessRequestContextQueue queue;
             ThreadlessRequestContext context;
-            if (requestsByUri.TryGetValue(uri, out queue) && queue.TryDequeue(out context))
+            bool useWaitHandle = false;
+            Func<Uri, ThreadlessRequestContextQueue> addAction = key =>
+            {
+                useWaitHandle = true;
+                return new ThreadlessRequestContextQueue()
+                {
+                    UseWaitHandle = true
+                };
+            };
+            ThreadlessRequestContextQueue queue = requestsByUri.GetOrAdd(uri, addAction);
+            if (useWaitHandle)
+            {
+                bool hasRequest = queue.WaitHandle.WaitOne(TimeSpan.FromMinutes(1));
+                queue.UseWaitHandle = false;
+                if (!hasRequest)
+                {
+                    throw new CommunicationObjectFaultedException();
+                }
+            }
+                
+            if (queue.TryDequeue(out context))
             {
                 message.Headers.To = uri;
                 return context.ExecuteRequest(message);
             }
             
             throw new CommunicationObjectFaultedException();
+        }
+
+        public void CloseUrl(Uri uri)
+        {
+            ThreadlessRequestContextQueue queue;
+            if (requestsByUri.TryRemove(uri, out queue))
+            {
+                ThreadlessRequestContext context;
+                while (queue.TryDequeue(out context))
+                {
+                    context.Close();
+                }
+            }
         }
     }
 }

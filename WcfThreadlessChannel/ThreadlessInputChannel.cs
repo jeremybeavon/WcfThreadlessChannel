@@ -24,7 +24,7 @@ namespace WcfThreadlessChannel
 
         public IAsyncResult BeginReceive(AsyncCallback callback, object state)
         {
-            return BindingElement.CreateAndRegisterRequestContext(LocalAddress.Uri, callback, state);
+            return BindingElement.CreateAndRegisterRequestContext(this, LocalAddress, callback, state);
         }
 
         public IAsyncResult BeginReceive(TimeSpan timeout, AsyncCallback callback, object state)
@@ -77,6 +77,12 @@ namespace WcfThreadlessChannel
         public bool WaitForMessage(TimeSpan timeout)
         {
             return false;
+        }
+
+        protected override void OnClosed()
+        {
+            base.OnClosed();
+            BindingElement.CloseUrl(LocalAddress.Uri);
         }
     }
 }

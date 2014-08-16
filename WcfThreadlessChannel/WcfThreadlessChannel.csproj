@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClosedAsyncResult.cs" />
     <Compile Include="CompletedAsyncResult.cs" />
     <Compile Include="CompletedAsyncResult.generic.cs" />
     <Compile Include="IHasBindingElement.cs" />

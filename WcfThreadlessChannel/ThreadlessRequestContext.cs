@@ -53,6 +53,13 @@ namespace WcfThreadlessChannel
 
         public override void Close()
         {
+            try
+            {
+                asyncCallback(new ClosedAsyncResult(AsyncState));
+            }
+            catch
+            {
+            }
         }
 
         public override void Close(TimeSpan timeout)
