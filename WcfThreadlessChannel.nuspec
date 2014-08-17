@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>WcfThreadlessChannel</id>
+        <version>1.0.0</version>
+        <authors>Jeremy Beavon</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Provides a WCF channel binding that has no transport and uses no threads. The server and client must use the same Binding object in the same app domain.</description>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System.ServiceModel" targetFramework=".NETFramework4.0" />
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+        <file src="WcfThreadlessChannel\bin\Release\WcfThreadlessChannel.dll" target="lib\net40\WcfThreadlessChannel.dll" />
+    </files>
+</package>

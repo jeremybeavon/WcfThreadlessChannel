@@ -216,3 +216,4 @@ $RECYCLE.BIN/
 AppDomainCallbackExtensions.sln.ide/edb.chk
 /AppDomainCallbackExtensions.sln.ide
 /WcfThreadlessChannel.sln.ide
+*.nupkg
